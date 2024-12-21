@@ -41,7 +41,8 @@
         .server-container form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+            align-items: center;
         }
 
         .server-container input, .server-container textarea {
@@ -49,6 +50,7 @@
             font-size: 1rem;
             border: none;
             border-radius: 5px;
+            width: 300px;
         }
 
         .server-container button {
@@ -69,6 +71,21 @@
             margin-top: 20px;
             color: #ccc;
         }
+
+        .image-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+        }
     </style>
 </head>
 <body>
@@ -80,7 +97,14 @@
         <h2>Create Your Server</h2>
         <form id="create-server-form">
             <input type="text" id="server-ip" placeholder="Enter Server IP" required>
-            <textarea id="server-description" placeholder="Server Description" rows="4" required></textarea>
+            
+            <div class="image-upload">
+                <input type="file" id="server-image" accept="image/*">
+                <img id="image-preview" class="image-preview" style="display: none;">
+                <p id="image-message" style="color: #ccc;">Upload an image (optional)</p>
+            </div>
+
+            <textarea id="server-description" placeholder="Server Description (Optional)" rows="4"></textarea>
             <button type="submit">Create Server</button>
         </form>
         <p class="back-link">
@@ -89,18 +113,40 @@
     </div>
 
     <script>
+        // Image preview functionality
+        const fileInput = document.getElementById('server-image');
+        const imagePreview = document.getElementById('image-preview');
+        const imageMessage = document.getElementById('image-message');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imagePreview.src = event.target.result;
+                    imagePreview.style.display = 'block';
+                    imageMessage.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission logic
         document.getElementById('create-server-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const serverIp = e.target['server-ip'].value;
             const serverDescription = e.target['server-description'].value;
+            const serverImage = e.target['server-image'].files[0];
 
-            // Save server data (mocking persistent storage)
+            // Prepare server data
             const serverData = {
                 ip: serverIp,
-                description: serverDescription
+                description: serverDescription || 'No description provided',
+                image: serverImage ? serverImage.name : null, // Store image name if uploaded
             };
 
+            // Save server data (mocking persistent storage)
             localStorage.setItem('hgservers_server', JSON.stringify(serverData));
 
             alert('Server Created Successfully!');
