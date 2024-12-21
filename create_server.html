@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Server - HGservers</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #2a2a2a;
+            color: white;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #5a0000;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .server-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 80px);
+        }
+
+        .server-container h2 {
+            font-size: 2rem;
+            font-family: "Comic Sans MS", cursive;
+        }
+
+        .server-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .server-container input, .server-container textarea {
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .server-container button {
+            padding: 10px;
+            font-size: 1rem;
+            background-color: #5a0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .server-container button:hover {
+            background-color: #7a0000;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>HGservers</h1>
+    </div>
+
+    <div class="server-container">
+        <h2>Create Your Server</h2>
+        <form id="create-server-form">
+            <input type="text" id="server-ip" placeholder="Enter Server IP" required>
+            <textarea id="server-description" placeholder="Server Description" rows="4" required></textarea>
+            <button type="submit">Create Server</button>
+        </form>
+        <p class="back-link">
+            <a href="index.html" style="color: #ccc; text-decoration: none;">Back to Home</a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('create-server-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const serverIp = e.target['server-ip'].value;
+            const serverDescription = e.target['server-description'].value;
+
+            // Save server data (mocking persistent storage)
+            const serverData = {
+                ip: serverIp,
+                description: serverDescription
+            };
+
+            localStorage.setItem('hgservers_server', JSON.stringify(serverData));
+
+            alert('Server Created Successfully!');
+
+            // Redirect to server details page (you may create this page later)
+            window.location.href = 'server_details.html';
+        });
+    </script>
+</body>
+</html>
